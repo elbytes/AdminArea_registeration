@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <style type="text/css">
     ol {
       margin:1em;
@@ -53,12 +53,11 @@
       // set this with one of the above values:
      $fieldSize = DEBUG_FIELD_SIZE;
 
-
       $customerId = ""; 
       $customerName = "";
       $customerAddress= "";
       $customerCity = "";
-      $customerStatus = "";
+      $customerStatus = ""; 
 
       $statusArray = array("0", "1");  
 
@@ -73,66 +72,21 @@
         $insertQueryString.= " VALUES(?,?,?,?)";
 
         $insertQuery = $conn->prepare($insertQueryString);
-        $insertQuery->bindParam(1, $customerName);
-        $insertQuery->bindParam(2, $customerAddress);
-        $insertQuery->bindParam(3, $customerCity);
-        $insertQuery->bindParam(4, $customerStatus);
+
+        $bindParamCounter =1;
+
+        $insertQuery->bindParam($bindParamCounter++, $customerName);
+        $insertQuery->bindParam($bindParamCounter++, $customerAddress);
+        $insertQuery->bindParam($bindParamCounter++, $customerCity);
+        $insertQuery->bindParam($bindParamCounter++, $customerStatus);
 
         $insertQuery->execute();
       }//end isset insert
 
+  require("customer-form.php");
   ?>
 
-  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" >
-     
-
-    <table>
-      <tr>
-        <td>
-          <label for="customer_name">Customer Name:</label>
-        </td>
-        <td>
-          <input class="form-control" type="text" name="customer_name" id="customer_name" size="<?php echo $fieldSize; ?>"value="<?php echo $customerName ?>" />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="customer_address">Customer Address:</label>
-        </td>
-        <td>
-          <input class="form-control" type="text" name="customer_address" id="customer_address" size="<?php echo $fieldSize; ?>" value="<?php echo $customerAddress ?>" />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="customer_city">Customer City:</label>
-        </td>
-        <td>
-          <input class="form-control" type="text" name="customer_city" id="customer_city" size="<?php echo $fieldSize; ?>" value="<?php echo $customerCity ?>" />
-        </td>
-      </tr> 
-      <tr>
-        <td>
-          <label for="customer_status">Customer Status:</label>
-        </td>
-        <td>
-          <select class="form-control form-control-sm">
-            <?php
-              foreach($statusArray as $value){
-                echo '<option value="'.$value.'">'.$value.'</option>';
-              }
-              
-            ?>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <input class="btn btn-success" type="submit" name="insert_record" value="Create New Customer Record" />
-        </td>
-      </tr>
-    </table>
-</form>
+  
 
 <a href="customers-records.php">Back to records</a>
 

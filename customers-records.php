@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <style type="text/css">
     ol {
       margin:1em;
@@ -24,8 +24,18 @@
 </head>
 
 <body>
+<div class="container">
+  
+  <div class="row ">
+    <div class="col-8">
+    <h2>Customer Records</h2>
+    </div>
+    <div class="col-4">
+    <button type="button" class="btn btn-success" onclick="document.location='create-customer-record.php'">Create New record</button>
+    </div>
+  </div>
+</div>
 
-  <h2>database connection</h2>
 
   <?php
    $serverName = "localhost"; 
@@ -55,7 +65,7 @@ try{
     $htmlOutput .= '</thead>';
 
     foreach($query->fetchAll() as $value){
-        $htmlOutput .= "/n<tr>";
+        $htmlOutput .= "<tr>";
 
         $htmlOutput .= "<td>";
         //$htmlOutput .= '<a href="'.$_SERVER["PHP_SELF"].'">'.$value["customer_id"].'</a>';
@@ -92,20 +102,6 @@ try{
   ?>
 
 
-  <form action="?firstName=Default" method="POST">
-
-    Text: <input type="text" name="firstName" value="" />
-    <br />
-    Password: <input type="password" name="password" value="" />
-    <br />
-    <input type="submit" name="submit" value="Submit:">
-    <br />
-    <label for="checkboxExample">Label for checkbox</label>
-    <input type="checkbox" name="checkboxExample" id="checkboxExample" checked="checked" value="isActiveDutyMilitary">
-    <br />
-    
-
-  </form>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <style type="text/css">
     ol {
       margin:1em;
@@ -14,9 +14,9 @@
     body {
       padding: 1em;
       background-color: #282828 ;
-      color: #E8E8E8;
+      color: #eff7fe;
     }
-
+ 
     .form-control{
         margin: 1em;
     }
@@ -38,6 +38,7 @@
    $customerAddress= "";
    $customerCity = "";
    $customerStatus = "";
+   $statusArray = array("0", "1");  
 
    $serverName = "localhost"; 
    $userName = "root"; 
@@ -65,7 +66,6 @@ try{
         $updateQuery->bindParam(5,$customerId);
         $updateQuery->execute();
 
-        //echo "debug: $updateQuery";
     }     // end isset updateRecord
     else{
         $customerId = htmlspecialchars($_GET['id']);
@@ -77,8 +77,7 @@ try{
     } // end isset deleteRecord
 
 
-    // echo "<br />";
-    // var_dump($conn);
+
     $selectQuery = "SELECT * FROM customers WHERE customer_id = " .$customerId;
     echo $selectQuery;
 
@@ -87,28 +86,20 @@ try{
   
     $result = $query->setFetchMode(PDO::FETCH_ASSOC);
 
-    $htmlOutput = '<table class="table table-dark">'; 
-    $htmlOutput .= '<thead class="thead-dark">';
-    $htmlOutput .= "<tr>"; 
-    $htmlOutput .= '<th scope="col">Customer ID</th>';
-    $htmlOutput .= '<th scope="col">Customer Name</th>';
-    $htmlOutput .= '<th scope="col">Address</th>';
-    $htmlOutput .= '<th scope="col">City</th>';
-    $htmlOutput .= '<th scope="col">Status</th>';
-    $htmlOutput .= "</tr>";
-    $htmlOutput .= '</thead>';
 
     $customers = $query->fetch();
 
     if(!empty($customers)){
-        echo "<br />record found";
+        $customerName = $customers["customer_name"];
+        $customerAddress = $customers["customer_address"];
+        $customerCity = $customers["customer_city"];
+        $customerStatus = $customers["customer_status"];
+    }
+    else{
+        echo "<br />customer record not found!";
     }
 
-    $htmlOutput .= "</table>"; 
-    echo $htmlOutput;
-    echo "<br />end of one record";
 
- 
     $customerName = $customers["customer_name"];
     $customerAddress = $customers["customer_address"];
     $customerCity = $customers["customer_city"];
@@ -132,7 +123,12 @@ try{
     </div>
   <div class="form-group">
     <label for="customer__status">Customer Status:</label>
-    <input type="text"  id="customer__status" name="customer_status" value="<?php echo $customerStatus ?>" />
+    <select class="form-control form-control-sm" name="customer_status" id="customer_status">
+    <?php
+              foreach($statusArray as $value){
+                echo '<option value="'.$value.'">'.$value.'</option>';
+              }           
+            ?>
     </div>
     <input type="submit" class="btn btn-primary" name="updateRecord" value="Update Record">
     <br />
@@ -140,6 +136,7 @@ try{
     <br />
     </form>
     
+    <a href="customers-records.php">Back to records</a>
 
     <?php
 
