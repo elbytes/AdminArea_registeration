@@ -13,6 +13,8 @@
     }
     body {
       padding: 1em;
+      background-color: #282828 ;
+      color: #E8E8E8;
     }
   </style>
 
@@ -33,8 +35,8 @@
 
 try{
     $conn = new PDO("mysql:host=$serverName;dbname=$databaseName", $userName, $password);
-    echo "<br />";
-    var_dump($conn);
+ 
+
     $selectQuery = "SELECT * FROM customers ORDER BY customer_id";
     $query = $conn->prepare($selectQuery);
     $query->execute();

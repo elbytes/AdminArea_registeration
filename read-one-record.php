@@ -13,6 +13,12 @@
     }
     body {
       padding: 1em;
+      background-color: #282828 ;
+      color: #E8E8E8;
+    }
+
+    .form-control{
+        margin: 1em;
     }
   </style>
 
@@ -41,8 +47,7 @@
 try{
     $conn = new PDO("mysql:host=$serverName;dbname=$databaseName", $userName, $password);
    
-
-
+    //update one records
     if(isset($_POST["updateRecord"])){
         $customerName = htmlspecialchars($_POST["customer_name"]);
         $customerAddress = htmlspecialchars($_POST["customer_address"]);
@@ -65,10 +70,12 @@ try{
     else{
         $customerId = htmlspecialchars($_GET['id']);
     }
-
+    
+    //delete one records
     if(isset($_POST["deleteRecord"])){
 
     } // end isset deleteRecord
+
 
     // echo "<br />";
     // var_dump($conn);
@@ -127,9 +134,9 @@ try{
     <label for="customer__status">Customer Status:</label>
     <input type="text"  id="customer__status" name="customer_status" value="<?php echo $customerStatus ?>" />
     </div>
-    <input type="submit" name="updateRecord" value="Update Record">
+    <input type="submit" class="btn btn-primary" name="updateRecord" value="Update Record">
     <br />
-    <input type="submit" name="deleteRecord" value="Delete Record">
+    <input type="submit" class="btn btn-danger" name="deleteRecord" value="Delete Record">
     <br />
     </form>
     
@@ -137,10 +144,10 @@ try{
     <?php
 
     
-}
+    }
     catch(PDOException $e){
       echo "<br />Could not establish database connection.";
-  }
+    }
 
   ?>
 
