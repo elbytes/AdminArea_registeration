@@ -32,12 +32,22 @@
       $tableUsername = $_POST["table_username"];  
       $password = $_POST["password"];
 
-      $userQueryString = "SELECT * FROM users WHERE username = '$tableUsername'";
-      echo $userQueryString; 
-      ?>
+      $userQueryString = "SELECT * FROM users WHERE username = ?";
+      $userQuery = $conn->prepare($userQueryString);
+      $userQuery->bindParam(1, $tableUsername);
+      $userQuery->execute();
+      $userQueryResult = $userQuery->setFetchMode(PDO::FETCH_ASSOC);
+      
+      $user = $userQuery->fetch();
+      echo '<br />userQuery["username]:'.$user["username"];
 
-<?php 
-
+      //verify password
+      if(password_verify($password, $user["password"])){
+        echo "Login Successful";
+      }
+      else{
+        echo "passwords do not match!";
+      }
     }  // end isset user login
     echo "<br />";
 
