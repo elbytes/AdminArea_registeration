@@ -1,0 +1,13 @@
+ol {
+    margin:1em;
+    width:70%;
+  }
+  pre {
+    border: 1px solid black;
+    margin: 1em 0;
+  }
+  body {
+    padding: 1em;
+    background-color: #F5F5F5	 ;
+    color: #303030;
+  }

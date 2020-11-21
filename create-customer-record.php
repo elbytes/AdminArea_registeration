@@ -13,8 +13,8 @@
     }
     body {
       padding: 1em;
-      background-color: #282828 ;
-      color: #E8E8E8;
+      background-color: #F5F5F5	 ;
+      color: #303030;
     }
 
     .form-control{
