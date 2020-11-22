@@ -15,29 +15,42 @@
 
   
 <?php
+session_start();
   $serverName = "localhost";  
   $userName = "root";  
   $password = "";  
   $databaseName = "final_project";
-
-  $fieldSize = 30;
+    $fieldSize = 30;
 
 
   try {
     $conn = new PDO("mysql:host=$serverName;dbname=$databaseName", $userName, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    if($_SESSION["authenticated"] === true){
+      echo 'Hello, '.$_SESSION["username"];
+      echo '<br />Now you can access these pages: ';
+      ?>
 
-        session_start();
-        echo 'Hello, '.$_SESSION["username"];
-        echo '<br />Now you can access these pages: ';
-        
-        echo '<br />';
-        
-        //$_SESSION["username"] = $tableUsername;
-        $_SESSION["authenticated"] = true;
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+  </div>
+</div>
 
-        echo '<br /> <div class="row">';
+      <?php
+
+
+      echo '<br />';
+      echo '<br /> <div class="row">';
         echo '<div class="col-sm-4">';
         echo '<a href="customers-records.php" type="button" class="btn btn-info ">Customers</a>';
         echo '</div>';
@@ -49,6 +62,10 @@
         echo '</div>';
         echo '</div><br />';
         echo '<a href="user-logout.php" type="button" class="btn btn-info ">Logout</a>';
+    } else{
+      echo "You need to login first";
+    }
+       
    
 
   }  // end try

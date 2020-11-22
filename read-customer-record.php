@@ -15,7 +15,7 @@
   <h2>Read one record / Edit / Delete</h2>
 
   <?php
-    
+    session_start();
    $customerId = ""; 
    $customerName = "";
    $customerAddress= "";
