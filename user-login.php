@@ -42,12 +42,15 @@
       //verify password
       if(password_verify($password, $user["password"])){
         session_start();
-        echo 'Hello, '.$_SESSION["username"];
+   
+        header("Location: user-landing.php"); 
+
+       /*  echo 'Hello, '.$_SESSION["username"];
         echo '<br />Now you can access these pages: ';
         
         echo '<br />';
         
-        $_SESSION["username"] = "a";
+        $_SESSION["username"] = $tableUsername;
         $_SESSION["authenticated"] = true;
 
         echo '<br /> <div class="row">';
@@ -58,13 +61,15 @@
         echo '<a href="user-records.php" type="button" class="btn btn-info ">Users</a>';
         echo '</div>';
         echo '<div class="col-sm-4">';
-        echo '<a href="" type="button" class="btn btn-info ">Info</a>';
+        echo '<a href="customer-orders.php" type="button" class="btn btn-info ">Customer Orders innerjoin</a>';
         echo '</div>';
         echo '</div><br />';
+        echo '<a href="user-logout.php" type="button" class="btn btn-info ">Logout</a>'; */
+
       }
       
       else{
-        echo "passwords do not match!";
+        echo "password and username do not match!";
       }
     }  // end isset user login
    

@@ -12,10 +12,17 @@
 
 <body>
 <?php require("navbar.html"); ?>
-  <h3>Customer Orders</h3>
+<div class="row">
+    <div class="col">
+    <h2>Customer Orders</h2>
+    </div>
+    
+  </div> 
 
   
 <?php
+  session_start();
+
   $serverName = "localhost";  
   $userName = "root";  
   $password = "";  
@@ -23,25 +30,58 @@
 
   $fieldSize = 30;
 
-
   try {
     $conn = new PDO("mysql:host=$serverName;dbname=$databaseName", $userName, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $customerOrdersQueryString = "SELECT * FROM customers, orders";
-    $customerOrdersQueryString.= " WHERE customers.customer_id = orders.customer_id";
-    echo $customerOrdersQueryString;
-    $customerOrdersQuery = $conn->prepare($customerOrdersQueryString);
-    $customerOrdersQuery->execute();
+      if($_SESSION["authenticated"] === true){
+        echo 'Hello, '.$_SESSION["username"];
+        echo '<div class="row"><div class="col"><br />';
+        echo '</div></div>'; 
 
-    foreach($customerOrdersQuery->fetchAll() as $key=>$value){
-        echo "<br />order_id: ".$value["order_id"];
-        echo "<br />order_date: ".$value["order_date"];
-        echo "<br />order_status: ".$value["order_status"];
-    }
-   
+      $customerOrdersQueryString = "SELECT * FROM customers, orders";
+      $customerOrdersQueryString.= " WHERE customers.customer_id = orders.customer_id";
+      $customerOrdersQuery = $conn->prepare($customerOrdersQueryString);
+      $customerOrdersQuery->execute();
+      
 
-  }  // end try
+      $htmlOutput = '<table class="table table-hover">'; 
+      $htmlOutput .= '<thead class="thead-dark">';
+      $htmlOutput .= "<tr>"; 
+      $htmlOutput .= '<th scope="col">Order ID</th>';
+      $htmlOutput .= '<th scope="col">Order Date</th>';
+      $htmlOutput .= '<th scope="col">Order Status</th>';
+      $htmlOutput .= "</tr>";
+      $htmlOutput .= '</thead>';
+
+
+        foreach($customerOrdersQuery->fetchAll() as $key=>$value){
+
+          $htmlOutput .= "<tr>";
+          $htmlOutput .= "<td>";
+          $htmlOutput .= $value["order_id"];
+          $htmlOutput .= "</td>";          
+          $htmlOutput .= "<td>";
+          $htmlOutput .= $value["order_date"];
+          $htmlOutput .= "</td>";          
+          $htmlOutput .= "<td>";
+          $htmlOutput .= $value["order_status"];
+          $htmlOutput .= "</td>";          
+
+            // echo "<br />order_id: ".$value["order_id"];
+            // echo "<br />order_date: ".$value["order_date"];
+            // echo "<br />order_status: ".$value["order_status"];
+        }//end foreach
+        $htmlOutput .= "</table>"; 
+        echo $htmlOutput;
+      }//end if
+      else{
+        echo "Please login first!";
+        echo '<br />';
+        echo '<a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
+      }
+    echo "<br />end of records";
+      }//end try
   catch (PDOException $e) {
     echo '<br />  $e (toString()): '.$e;
     echo '<br />  $e->getMessage(): '.$e->getMessage();

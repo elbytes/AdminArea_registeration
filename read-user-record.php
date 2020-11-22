@@ -15,7 +15,7 @@
   <h2>Read user record / Edit / Delete</h2>
 
   <?php
-    
+ session_start();
    $userId = ""; 
    $userName = "";
    $userTime= "";
@@ -32,18 +32,17 @@ try{
     //update one records
     if(isset($_POST["updateRecord"])){
         $userName = htmlspecialchars($_POST["username"]);
-        $userTime = htmlspecialchars($_POST["user_created_time"]);
+       // $userTime = htmlspecialchars($_POST["user_created_time"]);
 
-        $updateQueryString = "UPDATE users SET username = ?, user_created_time = ?";
+        $updateQueryString = "UPDATE users SET username = ?";
         $updateQueryString.= " WHERE user_id = ?";
         $updateQuery = $conn->prepare($updateQueryString);
-        $updateQuery->bindParam(1, $userId);
-        $updateQuery->bindParam(2, $userTime);
+        $updateQuery->bindParam(1, $userName);
+        $updateQuery->bindParam(2, $userId);
         $updateQuery->execute();
-
     }     
     else{
-        $userId = htmlspecialchars($_GET['id']);
+        $userId = htmlspecialchars($_GET['user_id']);
     }// end isset updateRecord
     
     //delete one records
@@ -57,24 +56,22 @@ try{
         $deleteQuery->execute();
     } 
     else{
-        $customerId = htmlspecialchars($_GET['id']);
+        $userId = htmlspecialchars($_GET['user_id']);
     }// end isset deleteRecord
 
-    if(isset($_GET["id"])){
+    if(isset($_GET["user_id"])){
       
-      $userId = htmlspecialchars($_GET["id"]);
-      $selectQuery = "SELECT * FROM users WHERE user_id = " .$userId;
-      echo $selectQuery;
-  
+      $userId = htmlspecialchars($_GET["user_id"]);
+      $selectQuery = "SELECT * FROM users WHERE user_id = " .$userId;  
       $query = $conn->prepare($selectQuery);
       $query->execute();
     
-      $result = $query->setFetchMode(PDO::FETCH_ASSOC);
+      //$result = $query->setFetchMode(PDO::FETCH_ASSOC);
       $users = $query->fetch();
 
       if(!empty($users)){
         $userName = $users["username"];
-        $userTime = $users["user_created_time"];
+       // $userTime = $users["user_created_time"];
       }
     else{
         echo "<br />user record not found!";
@@ -89,7 +86,7 @@ try{
     <table>
       <tr>
 <div class="form-group 8">
-    <input type="hidden" class="form-control" name="customer_id" value="<?php echo htmlspecialchars($userId); ?>" />
+    <input type="hidden" class="form-control" name="user_id" value="<?php echo htmlspecialchars($userId); ?>" />
     <td>
     <label for="customer__name">Username:</label>
   </td>
@@ -97,17 +94,16 @@ try{
     <input type="text" id="username" class="form-control" name="username" value="<?php echo $userName ?>" />
   </td>
   </tr>
-  <tr>
 </div>
-  <div class="form-group">
+  <!-- <div class="form-group">
   <td>  
   <label for="customer__address">User Creation Time:</label>
   </td>
   <td>
     <input type="text" id="user_created_time" class="form-control" name="user_created_time" value="<?php echo $userTime ?>" />
   </td>
-    </div>
-  </tr>
+    </div> -->
+
             <tr>
               <td>
     <input type="submit" class="btn btn-primary" name="updateRecord" value="Update Record">

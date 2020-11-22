@@ -17,9 +17,7 @@
     <div class="col">
     <h2>Customer Records</h2>
     </div>
-    <div class="col">
-    <button style="float: right; margin-bottom: 1em;" type="button" class="btn btn-success" onclick="document.location='create-customer-record.php'">Create New record</button>
-    </div>
+    
   </div> 
 
   <?php
@@ -45,7 +43,13 @@ try{
         $query->execute();
       
         $result = $query->setFetchMode(PDO::FETCH_ASSOC);
+?>
 
+        <div class="col">
+    <button style="float: right; margin-bottom: 1em;" type="button" class="btn btn-success" onclick="document.location='create-customer-record.php'">Create New record</button>
+    </div>
+
+    <?php
         $htmlOutput = '<table class="table table-hover">'; 
         $htmlOutput .= '<thead class="thead-dark">';
         $htmlOutput .= "<tr>"; 
@@ -82,6 +86,7 @@ try{
     }//end if
   else{
     echo "Please login first!";
+    echo '<br />';
     echo '<a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
   }
     echo "<br />end of records";

@@ -26,7 +26,7 @@
       <div class="card" style="width:400px">
   <img class="card-img-top" src="img_avatar1.png" alt="Card image" style="padding: 1em 1em;">
   <div class="card-body">
-    <h4 class="card-title">John Doe</h4>
+    <h4 class="card-title">No Login, No Go</h4>
     <p class="card-text">Please login to access pages</p>
     <a href="user-login.php" type="button" class="btn btn-primary btn-lg" style="display: block;  margin-left: auto; margin-right: auto;">Login</a>
       </div>
