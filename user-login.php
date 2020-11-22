@@ -5,13 +5,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
 
-  <title>PHP</title>
+  <title>Login</title>
   <meta charset="utf-8">
 
 </head>
-
 <body>
-
+<?php require("navbar.html"); ?>
   <h3>User Login</h3>
 
   
@@ -39,17 +38,37 @@
       $userQueryResult = $userQuery->setFetchMode(PDO::FETCH_ASSOC);
       
       $user = $userQuery->fetch();
-      echo '<br />userQuery["username]:'.$user["username"];
 
       //verify password
       if(password_verify($password, $user["password"])){
-        echo "Login Successful";
+        session_start();
+        echo 'Hello, '.$_SESSION["username"];
+        echo '<br />Now you can access these pages: ';
+        
+        echo '<br />';
+        
+        $_SESSION["username"] = "a";
+        $_SESSION["authenticated"] = true;
+
+        echo '<br /> <div class="row">';
+        echo '<div class="col-sm-4">';
+        echo '<a href="customers-records.php" type="button" class="btn btn-info ">Customers</a>';
+        echo '</div>';
+        echo '<div class="col-sm-4">';
+        echo '<a href="user-records.php" type="button" class="btn btn-info ">Users</a>';
+        echo '</div>';
+        echo '<div class="col-sm-4">';
+        echo '<a href="" type="button" class="btn btn-info ">Info</a>';
+        echo '</div>';
+        echo '</div><br />';
+ 
       }
+      
       else{
         echo "passwords do not match!";
       }
     }  // end isset user login
-    echo "<br />";
+   
 
   }  // end try
   catch (PDOException $e) {
@@ -59,6 +78,10 @@
   } // end catch
 
 ?>
+
+
+
+
   <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" >
     <table>
       <tr>

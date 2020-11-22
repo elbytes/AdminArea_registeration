@@ -2,33 +2,15 @@
 <html>
 <head>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-  <style type="text/css">
-    ol {
-      margin:1em;
-      width:70%;
-    }
-    pre {
-      border: 1px solid black;
-      margin: 1em 0;
-    }
-    body {
-      padding: 1em;
-      background-color: #F5F5F5	 ;
-      color: #303030;
-    }
+    <link rel="stylesheet" href="styles.css">
 
-    .form-control{
-        margin: 1em;
-    }
-  </style>
-
-  <title>PHP</title>
+  <title>Create New Customer</title>
   <meta charset="utf-8">
 
 </head>
 
 <body>
-
+<?php require("navbar.html"); ?>
 
 <?php
 

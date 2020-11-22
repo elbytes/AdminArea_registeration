@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="styles.css">
 
 
-  <title>PHP</title>
+  <title>One Customer Record</title>
   <meta charset="utf-8">
 
 </head>
@@ -31,7 +31,8 @@
 
 try{
     $conn = new PDO("mysql:host=$serverName;dbname=$databaseName", $userName, $password);
-   
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
     //update one records
     if(isset($_POST["updateRecord"])){
         $customerName = htmlspecialchars($_POST["customer_name"]);
@@ -138,13 +139,14 @@ try{
       <td>
     <select class="form-control form-control-sm" name="customer_status" id="customer_status">
     <?php
-              foreach($statusArray as $value){
-                echo '<option value="'.$value.'" >'.$value.'</option>';
-              }           
-            ?>
+      foreach($statusArray as $value){
+      echo '<option value="'.$value.'" >'.$value.'</option>';
+      }           
+    ?>
   </td>  
   </div>
             </tr>
+            <br />
             <tr>
               <td>
     <input type="submit" class="btn btn-primary" name="updateRecord" value="Update Record">
