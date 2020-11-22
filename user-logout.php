@@ -28,10 +28,12 @@ try{
       if(isset($_SESSION["authenticated"]) && isset($_SESSION["authenticated"]) ===true){
         session_destroy();
         $_SESSION = array();
-        echo "You are now logged out.";
-        echo '<br />';
-        echo '<br />';
-        echo '<a href="user-login.php" type="button" class="btn btn-primary" >Log back in</a>';
+        echo'<div class="row"><div class="col">';
+        echo '<p>You are now logged out.</p>';
+        echo '</div></div>';
+        echo'<div class="row"><div class="col">';
+        echo '<a href="user-login.php" type="button" class="btn btn-primary">Log back in</a>';
+        echo '</div></div>'; 
       }//end if
     }//end try
     catch(PDOException $e){
@@ -41,7 +43,12 @@ try{
   ?>
 
 
- 
+<div class="row">
+  <div class="col"></div>
+  <div class="col"></div>
+  <div class="col"></div>
+  <div class="col"></div>
+</div>
 
 </body>
 </html>
