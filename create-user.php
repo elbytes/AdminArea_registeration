@@ -107,9 +107,7 @@
       </tr>
     </table>
   </form>
+  <a href="user-records.php">Back to records</a>
 
-  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-    <input type="submit" name="clear_post" value="Clear POST" />
-  </form>
 </body>
 </html>

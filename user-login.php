@@ -61,7 +61,6 @@
         echo '<a href="" type="button" class="btn btn-info ">Info</a>';
         echo '</div>';
         echo '</div><br />';
- 
       }
       
       else{

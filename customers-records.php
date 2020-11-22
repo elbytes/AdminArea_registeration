@@ -60,7 +60,7 @@ try{
           foreach($query->fetchAll() as $value){
               $htmlOutput .= "<tr>";
               $htmlOutput .= "<td>";
-              $htmlOutput .= '<a href="read-one-record.php?id='.$value["customer_id"].'">'.$value["customer_id"].'</a>';
+              $htmlOutput .= '<a href="read-customer-record.php?id='.$value["customer_id"].'">'.$value["customer_id"].'</a>';
               $htmlOutput .= "</td>";
               $htmlOutput .= "<td>";
               $htmlOutput .= $value["customer_name"];
