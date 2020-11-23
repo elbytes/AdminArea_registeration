@@ -34,7 +34,7 @@ try{
     $conn = new PDO("mysql:host=$serverName;dbname=$databaseName", $userName, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if($_SESSION["authenticated"] === true){
+    if(isset($_SESSION["authenticated"]) && $_SESSION["authenticated"] === true){
       echo '<div class="container-fluid">';
       echo '<div class="row">';
       echo '<div class="col-sm-8"><h4>Hello, '.$_SESSION["username"] .'</h4>';
@@ -76,8 +76,8 @@ try{
         echo $htmlOutput;
     }//end if
   else{
-    echo "Please login first!";
-    echo '<a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
+    echo "<br />Please login first!";
+    echo '<br /><a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
   }
   echo '<a href="user-landing.php" type="button" class="btn btn-primary" style="float: right;">Back</a>';
 

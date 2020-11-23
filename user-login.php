@@ -43,11 +43,8 @@
 
       //verify password
         if(password_verify($password, $user["password"])){
-        
           $_SESSION["username"] = $tableUsername;
-          $_SESSION["authenticated"] = true;
-
-         
+          $_SESSION["authenticated"] = true;  
         }//end if password_verify
       else{
         echo "password and username do not match!";
@@ -55,7 +52,6 @@
       if($_SESSION["authenticated"] === true){
         echo 'Hello, '.$_SESSION["username"];
         echo '<br />Now you can access these pages: ';
-        
         echo '<br />';
        header("Location: user-landing.php"); 
       }
@@ -67,7 +63,6 @@
     echo '<br />$e->getCode(): '.$e->getCode();
   } // end catch
 ?>
-
 
 <div class="container-fluid">
     <div class="row">
@@ -96,12 +91,10 @@
           <label for="password">Password:</label>
         </td>
         <td>
-      
           <input class="form-control" type="password" name="password" id="password" size="<?php echo $fieldSize; ?>" v/>
         </td>
       </tr>
       <tr>
-       
         <td colspan="4">
         <br />
           <input type="submit" class="btn btn-primary btn-lg" style="display: block;  margin-left: auto; margin-right: auto;" name="login" value="Login" />
@@ -112,11 +105,6 @@
       </div>
       </div>
       </div>
-
   </div>
-
-
-  
-
 </body>
 </html>
