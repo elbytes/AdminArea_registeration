@@ -33,55 +33,17 @@ try{
     $conn = new PDO("mysql:host=$serverName;dbname=$databaseName", $userName, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if(isset($_SESSION["authenticated"]) && $_SESSION["authenticated"] === true){
+  if(isset($_SESSION["authenticated"]) && $_SESSION["authenticated"] === true){
       echo '<div class="container-fluid">';
       echo '<div class="row">';
       echo '<div class="col-sm-8"><h4>Hello, '.$_SESSION["username"] .'</h4>';
       echo '</div>';
       echo '<div class="col-sm-4"><a href="user-logout.php" type="button" class="btn btn-info" style="float: right;">Logout</a>';
       echo '</div>';
-      echo '<br /><p>To edit a record, click on the record ID</p>';
       echo '</div></div>';
 
-    //update one records
-    if(isset($_POST["updateRecord"])){
-        $customerName = htmlspecialchars($_POST["customer_name"]);
-        $customerAddress = htmlspecialchars($_POST["customer_address"]);
-        $customerCity =htmlspecialchars($_POST["customer_city"]);
-        $customerStatus = htmlspecialchars($_POST["customer_status"]);
-        $customerId = htmlspecialchars($_POST["customer_id"]);
-
-        $updateQueryString = "UPDATE customers SET customer_name = ?, customer_address = ?, customer_city= ?, customer_status=?";
-        $updateQueryString.= " WHERE customer_id = ?";
-        $updateQuery = $conn->prepare($updateQueryString);
-        $updateQuery->bindParam(1, $customerName);
-        $updateQuery->bindParam(2, $customerAddress);
-        $updateQuery->bindParam(3, $customerCity);
-        $updateQuery->bindParam(4, $customerStatus);
-        $updateQuery->bindParam(5,$customerId);
-        $updateQuery->execute();
-    }     
-    else{
-        $customerId = htmlspecialchars($_GET['id']);
-    }// end isset updateRecord
-    
-    //delete one records
-    if(isset($_POST["deleteRecord"])){
-        $customerId = htmlspecialchars($_POST["customer_id"]);
-         
-        $deleteQueryString = "DELETE FROM customers WHERE";
-        $deleteQueryString.= " customer_id= ?";
-        $deleteQuery = $conn->prepare($deleteQueryString);
-        $deleteQuery->bindParam(1, $customerId);
-        $deleteQuery->execute();
-    } 
-    else{
-        $customerId = htmlspecialchars($_GET['id']);
-    }// end isset deleteRecord
-
-    if(isset($_GET["id"])){
-      
-      $customerId = htmlspecialchars($_GET["id"]);
+      //read one record
+      $customerId = htmlspecialchars($_GET['id']);
       $selectQueryString = "SELECT * FROM customers WHERE customer_id = ?";
       $selectQuery = $conn->prepare($selectQueryString);
       $selectQuery->bindParam(1, $customerId);
@@ -94,42 +56,120 @@ try{
         $customerAddress = $customers["customer_address"];
         $customerCity = $customers["customer_city"];
         $customerStatus = $customers["customer_status"];
-      }
-    else{
-        echo "<br />customer record not found!";
-      } 
-    }
+        ?>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" >
+     <table>
+       <tr>
+         <td>
+           <input type="hidden" name="customer_id" value="">           
+         </td>
+       </tr>
+       <tr class="d-flex">
+         <td class="col-5">
+           <label for="customer_name">Customer Name:</label>
+         </td>
+         <td class="col-8">
+           <input class="form-control" type="text" name="customer_name" id="customer_name" size="<?php echo $fieldSize; ?>"value="<?php echo $customerName ?>" />
+         </td>
+       </tr>
+       <tr class="d-flex">
+         <td class="col-5">
+           <label for="customer_address">Customer Address:</label>
+         </td>
+         <td class="col-8">
+           <input class="form-control" type="text" name="customer_address" id="customer_address" size="<?php echo $fieldSize; ?>" value="<?php echo $customerAddress ?>" />
+         </td>
+       </tr>
+       <tr class="d-flex">
+         <td class="col-5">
+           <label for="customer_city">Customer City:</label>
+         </td>
+         <td class="col-8">
+           <input class="form-control" type="text" name="customer_city" id="customer_city" size="<?php echo $fieldSize; ?>" value="<?php echo $customerCity ?>" />
+         </td class="col-1">
+       </tr> 
+       <tr class="d-flex">
+         <td class="col-5">
+           <label for="customer_status">Customer Status:</label>
+         </td>
+         <td class="col-3">
+           <select class="form-control form-control-sm" name="customer_status" id="customer_status">
+             <?php
+               foreach($statusArray as $value){
+                 echo '<option value="'.$value.'">'.$value.'</option>';
+               }
+             ?>
+           </select>
+         </td>
+       </tr>
+     </table>
+ </form>
+        <?php
+      }//end if !empty
 
-    $customerName = $customers["customer_name"];
-    $customerAddress = $customers["customer_address"];
-    $customerCity = $customers["customer_city"];
-    $customerStatus = $customers["customer_status"];
 
-    require("customer-form.php");
-    echo '<table><tr>
-      <td colspan="2">
-        <input class="btn btn-success" type="submit" name="insert_record" value="Update Customer Record" style="margin: 1em;"/>
-      </td>
-    </tr></table>';
- ?>
+    //update one records
+    if(isset($_POST["updateRecord"])){
+      $customerName = $_POST["customer_name"];
+      $customerName = $_POST["customer_address"];
+      $customerCity = $_POST["customer_city"];
+      $customerStatus = $_POST["customer_status"];
+      $customerId = $_POST['customer_id'];
+
+      echo "page accessed from POST updateRecord button";
+        $updateQueryString = "UPDATE customers SET customer_name = ?, customer_address = ?, customer_city= ?, customer_status=?";
+        $updateQueryString.= " WHERE customer_id = ?";
+        $updateQuery = $conn->prepare($updateQueryString);
+        $updateQuery->bindParam(1, $customerName);
+        $updateQuery->bindParam(2, $customerAddress);
+        $updateQuery->bindParam(3, $customerCity);
+        $updateQuery->bindParam(4, $customerStatus);
+        $updateQuery->bindParam(5,$customerId);
+        $updateQuery->execute();
+    }     
+     else{
+         $customerId = htmlspecialchars($_GET['id']);
+     }// end isset updateRecord
+    
+    //delete one records
+    if(isset($_POST["deleteRecord"])){
+        $customerId = htmlspecialchars($_POST["customer_id"]);
+         
+        $deleteQueryString = "DELETE FROM customers WHERE";
+        $deleteQueryString.= " customer_id= ?";
+        $deleteQuery = $conn->prepare($deleteQueryString);
+        $deleteQuery->bindParam(1, $customerId);
+        $deleteQuery->execute();
+    } 
+     else{
+        $customerId = htmlspecialchars($_GET['id']);
+     }// end isset deleteRecord
+
+
+    if(isset($_GET["id"])){
+      //debug:
+      echo 'page accessed from GET hyperlink';
+      
    
-  
-  <a href="customers-records.php" type="button" class="btn btn-primary" style="float: right;">Back To Records</a>
-
+    }
+ ?>
+      
+  <a href="customers-records.php" type="button" class="btn btn-primary" style="float: right; margin: 1em;">Back To Records</a>
+  <input class="btn btn-success" type="submit" name="updateRecord" value="Update Customer Record" style="margin: 1em;"/>
+  <input type="submit" class="btn btn-danger" name="deleteRecord" value="Delete Record" style="margin: 1em;">
 
     <?php
 
-    }
-    else{
-      echo "<br />Please login first!<br />";
-      echo '<br /><a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
-    }
-    }
-    catch(PDOException $e){
-      echo "<br />Could not establish database connection.";
-    }
-
-  ?>
+  }//end if for SESSION
+  else{
+    echo "<br />Please login first!<br />";
+    echo '<br /><a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
+  }
+}//end try
+catch(PDOException $e){
+  echo "<br />Could not establish database connection.";
+}
+?>
 
 </body>
 </html>
