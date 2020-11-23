@@ -59,7 +59,11 @@ try {
         $insertQuery->execute();
       }//end isset insert
       require("customer-form.php");
-      
+      echo '<table><tr>
+      <td colspan="2">
+        <input class="btn btn-success" type="submit" name="insert_record" value="Create New Customer Record" style="margin: 1em;"/>
+      </td>
+    </tr></table>';
     }
     else{
       echo "<br />Please login first!";

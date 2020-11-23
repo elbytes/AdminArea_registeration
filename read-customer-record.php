@@ -106,6 +106,11 @@ try{
     $customerStatus = $customers["customer_status"];
 
     require("customer-form.php");
+    echo '<table><tr>
+      <td colspan="2">
+        <input class="btn btn-success" type="submit" name="insert_record" value="Update Customer Record" style="margin: 1em;"/>
+      </td>
+    </tr></table>';
  ?>
    
   
