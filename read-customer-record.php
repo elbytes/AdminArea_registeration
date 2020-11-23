@@ -15,7 +15,7 @@
   <h2>Read one record / Edit / Delete</h2>
 
   <?php
-    session_start();
+   session_start();
    $customerId = ""; 
    $customerName = "";
    $customerAddress= "";
@@ -32,6 +32,16 @@
 try{
     $conn = new PDO("mysql:host=$serverName;dbname=$databaseName", $userName, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    if($_SESSION["authenticated"] === true){
+      echo '<div class="container-fluid">';
+      echo '<div class="row">';
+      echo '<div class="col-sm-8"><h4>Hello, '.$_SESSION["username"] .'</h4>';
+      echo '</div>';
+      echo '<div class="col-sm-4"><a href="user-logout.php" type="button" class="btn btn-info" style="float: right;">Logout</a>';
+      echo '</div>';
+      echo '<br /><p>To edit a record, click on the record ID</p>';
+      echo '</div></div>';
 
     //update one records
     if(isset($_POST["updateRecord"])){
@@ -50,7 +60,6 @@ try{
         $updateQuery->bindParam(4, $customerStatus);
         $updateQuery->bindParam(5,$customerId);
         $updateQuery->execute();
-
     }     
     else{
         $customerId = htmlspecialchars($_GET['id']);
@@ -73,15 +82,13 @@ try{
     if(isset($_GET["id"])){
       
       $customerId = htmlspecialchars($_GET["id"]);
-      $selectQuery = "SELECT * FROM customers WHERE customer_id = " .$customerId;
-      echo $selectQuery;
-  
-      $query = $conn->prepare($selectQuery);
-      $query->execute();
-    
-      $result = $query->setFetchMode(PDO::FETCH_ASSOC);
-      $customers = $query->fetch();
+      $selectQueryString = "SELECT * FROM customers WHERE customer_id = ?";
+      $selectQuery = $conn->prepare($selectQueryString);
+      $selectQuery->bindParam(1, $customerId);
+      $selectQuery->execute();
 
+      $result = $selectQuery->setFetchMode(PDO::FETCH_ASSOC);
+      $customers = $selectQuery->fetch();
       if(!empty($customers)){
         $customerName = $customers["customer_name"];
         $customerAddress = $customers["customer_address"];
@@ -97,74 +104,21 @@ try{
     $customerAddress = $customers["customer_address"];
     $customerCity = $customers["customer_city"];
     $customerStatus = $customers["customer_status"];
+
+    require("customer-form.php");
  ?>
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" >
-    <table>
-      <tr>
-<div class="form-group 8">
-    <input type="hidden" class="form-control" name="customer_id" value="<?php echo htmlspecialchars($customerId); ?>" />
-    <td>
-    <label for="customer__name">Customer Name:</label>
-  </td>
-  <td>
-    <input type="text" id="customer__name" class="form-control" name="customer_name" value="<?php echo $customerName ?>" />
-  </td>
-  </tr>
-  <tr>
-</div>
-  <div class="form-group">
-  <td>  
-  <label for="customer__address">Customer Address:</label>
-  </td>
-  <td>
-    <input type="text" id="customer__address" class="form-control" name="customer_address" value="<?php echo $customerAddress ?>" />
-  </td>
-    </div>
-  </tr>
-  <tr>
+   
+  
+  <a href="customers-records.php" type="button" class="btn btn-primary" style="float: right;">Back To Records</a>
 
-  <div class="form-group">
-  <td>  
-  <label for="customer__city">Customer City:</label>
-  </td>
-  <td>
-    <input type="text" id="customer__city" class="form-control" name="customer_city" value="<?php echo $customerCity ?>" />
-  </td>
-    </div>
-    <tr>
-  <div class="form-group">
-    <td>
-    <label for="customer__status">Customer Status:</label>
-  </td>
-      <td>
-    <select class="form-control form-control-sm" name="customer_status" id="customer_status">
-    <?php
-      foreach($statusArray as $value){
-      echo '<option value="'.$value.'" >'.$value.'</option>';
-      }           
-    ?>
-  </td>  
-  </div>
-            </tr>
-            <br />
-            <tr>
-              <td>
-    <input type="submit" class="btn btn-primary" name="updateRecord" value="Update Record">
-            </td>
-    <br />
-    <td>
-    <input type="submit" class="btn btn-danger" name="deleteRecord" value="Delete Record">
-            </td>
-    <br />
-            </tr>
-            </table>
-    </form>
-    
-    <a href="customers-records.php">Back to records</a>
 
     <?php
 
-    
+    }
+    else{
+      echo "<br />Please login first!<br />";
+      echo '<br /><a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
+    }
     }
     catch(PDOException $e){
       echo "<br />Could not establish database connection.";

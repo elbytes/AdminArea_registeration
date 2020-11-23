@@ -35,19 +35,25 @@
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
       if($_SESSION["authenticated"] === true){
-        echo 'Hello, '.$_SESSION["username"];
-        echo '<div class="row"><div class="col"><br />';
-        echo '</div></div>'; 
+        echo '<div class="container-fluid">';
+        echo '<div class="row">';
+        echo '<div class="col-sm-8"><h4>Hello, '.$_SESSION["username"] .'</h4>';
+        echo '</div>';
+        echo '<div class="col-sm-4"><a href="user-logout.php" type="button" class="btn btn-info" style="float: right;">Logout</a>';
+        echo '</div>';
+        echo '<br /><p>Here you can view orders placed by customers:</p>';
+        echo '</div></div>';
 
       $customerOrdersQueryString = "SELECT * FROM customers, orders";
       $customerOrdersQueryString.= " WHERE customers.customer_id = orders.customer_id";
       $customerOrdersQuery = $conn->prepare($customerOrdersQueryString);
       $customerOrdersQuery->execute();
       
-
       $htmlOutput = '<table class="table table-hover">'; 
       $htmlOutput .= '<thead class="thead-dark">';
       $htmlOutput .= "<tr>"; 
+      $htmlOutput .= '<th scope="col">Customer ID</th>';
+      $htmlOutput .= '<th scope="col">Customer name</th>';
       $htmlOutput .= '<th scope="col">Order ID</th>';
       $htmlOutput .= '<th scope="col">Order Date</th>';
       $htmlOutput .= '<th scope="col">Order Status</th>';
@@ -59,6 +65,12 @@
 
           $htmlOutput .= "<tr>";
           $htmlOutput .= "<td>";
+          $htmlOutput .= $value["customer_id"];
+          $htmlOutput .= "</td>";
+          $htmlOutput .= "<td>";
+          $htmlOutput .= $value["customer_name"];
+          $htmlOutput .= "</td>";
+          $htmlOutput .= "<td>";
           $htmlOutput .= $value["order_id"];
           $htmlOutput .= "</td>";          
           $htmlOutput .= "<td>";
@@ -66,22 +78,20 @@
           $htmlOutput .= "</td>";          
           $htmlOutput .= "<td>";
           $htmlOutput .= $value["order_status"];
-          $htmlOutput .= "</td>";          
+          $htmlOutput .= "</td>";
+          $htmlOutput .=  "</tr>";         
 
-            // echo "<br />order_id: ".$value["order_id"];
-            // echo "<br />order_date: ".$value["order_date"];
-            // echo "<br />order_status: ".$value["order_status"];
         }//end foreach
         $htmlOutput .= "</table>"; 
         echo $htmlOutput;
       }//end if
       else{
-        echo "Please login first!";
-        echo '<br />';
-        echo '<a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
+        echo "<br />Please login first!<br />";
+        echo '<br /><a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
       }
-    echo "<br />end of records";
-      }//end try
+      
+      echo '<a href="user-landing.php" type="button" class="btn btn-primary" style="float: right;">Back</a>';
+    }//end try
   catch (PDOException $e) {
     echo '<br />  $e (toString()): '.$e;
     echo '<br />  $e->getMessage(): '.$e->getMessage();

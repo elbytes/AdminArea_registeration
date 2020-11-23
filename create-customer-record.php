@@ -13,35 +13,33 @@
 <?php require("navbar.html"); ?>
 
 <?php
+session_start();
+$servername = "localhost";  
+$username = "root";
+$password = "";
+$dbname = "final_project";
 
-  try {
-
-    $servername = "localhost";  
-    $username = "root";
-    $password = "";
-    $dbname = "final_project";
-      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    if($_SESSION["authenticated"] === true){
+      echo '<div class="container-fluid">';
+      echo '<div class="row">';
+      echo '<div class="col-sm-8"><h4>Hello, '.$_SESSION["username"] .'</h4>';
+      echo '</div>';
+      echo '<div class="col-sm-4"><a href="user-logout.php" type="button" class="btn btn-info" style="float: right;">Logout</a>';
+      echo '</div>';
+      echo '<br /><p>You can create a new user here</p>';
+      echo '</div></div>';
       
-
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      echo "Connected successfully";
-
-
-      // Debug
-      define('DEBUG_FIELD_SIZE', 100);
-      define('PRODUCTION_FIELD_SIZE', 30);
-
-      
-      // set this with one of the above values:
-     $fieldSize = DEBUG_FIELD_SIZE;
-
       $customerId = ""; 
       $customerName = "";
       $customerAddress= "";
       $customerCity = "";
       $customerStatus = ""; 
 
-      $statusArray = array("0", "1");  
+      $statusArray = array("0", "1"); 
 
       if(isset($_POST['insert_record'])) {
         $customerName = htmlspecialchars($_POST['customer_name']);
@@ -52,32 +50,29 @@
         $insertQueryString = "INSERT INTO customers";
         $insertQueryString.= " (customer_name, customer_address, customer_city, customer_status)";
         $insertQueryString.= " VALUES(?,?,?,?)";
-
         $insertQuery = $conn->prepare($insertQueryString);
-
-        $bindParamCounter =1;
-
-        $insertQuery->bindParam($bindParamCounter++, $customerName);
-        $insertQuery->bindParam($bindParamCounter++, $customerAddress);
-        $insertQuery->bindParam($bindParamCounter++, $customerCity);
-        $insertQuery->bindParam($bindParamCounter++, $customerStatus);
+        $insertQuery->bindParam(1, $customerName);
+        $insertQuery->bindParam(2, $customerAddress);
+        $insertQuery->bindParam(3, $customerCity);
+        $insertQuery->bindParam(4, $customerStatus);
 
         $insertQuery->execute();
       }//end isset insert
-
-  require("customer-form.php");
-  ?>
-
-  
-
-<a href="customers-records.php">Back to records</a>
+      require("customer-form.php");
+      
+    }
+    else{
+      echo "<br />Please login first!";
+      echo '<br /><a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
+    }
+    ?>
+ <a href="user-landing.php" type="button" class="btn btn-primary" style="float: right;">Back</a>
 
   <?php
-      }
-  catch(PDOException $e)
-      {
+  }
+  catch(PDOException $e){
       echo "Connection failed: " . $e->getMessage();
-      }
+  }
  ?>
 
 </body>

@@ -16,6 +16,7 @@
 
   
 <?php
+  session_start();
   $serverName = "localhost";  
   $userName = "root";  
   $password = "";  
@@ -23,36 +24,36 @@
 
   $fieldSize = 30;
 
-
   try {
     $conn = new PDO("mysql:host=$serverName;dbname=$databaseName", $userName, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Clear post variables
-    if(isset($_POST["clear_post"])) {
-      $_POST = array();
-    }
-
+    if($_SESSION["authenticated"] === true){
+      echo '<div class="container-fluid">';
+      echo '<div class="row">';
+      echo '<div class="col-sm-8"><h4>Hello, '.$_SESSION["username"] .'</h4>';
+      echo '</div>';
+      echo '<div class="col-sm-4"><a href="user-logout.php" type="button" class="btn btn-info" style="float: right;">Logout</a>';
+      echo '</div>';
+      echo '<br /><p>You can create a new user here</p>';
+      echo '</div></div>';
+      require("user-form.php");
     if(isset($_POST["create_new_user"])) {
-
-      echo "<br />Create button pressed";
-
       $tableUsername = $_POST["table_username"];  
       $password = $_POST["password"];
       $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
       $confirmedPassword = $_POST["confirmed_password"];
 
-      echo $hashedPassword;
-
       //password match
       if($confirmedPassword === $password){
-        echo "passwords match!";
+        echo "<br />passwords match!";
     
       $insertQueryString = "INSERT INTO users (username, password) VALUES(?, ?)";
       $insertQuery = $conn->prepare($insertQueryString);
       $insertQuery->bindParam(1,$tableUsername);
       $insertQuery->bindParam(2, $hashedPassword);
       $insertQuery->execute();
+      echo "<br /><h4>User was created</h4>";
       }
       else{
         echo "passwords do not match!";
@@ -61,8 +62,13 @@
 
 <?php 
 
-    }  // end isset Create New User
-    echo "<br />";
+    } 
+   } // end isset Create New User
+   else{
+    echo "<br />Please login first!<br />";
+    echo '<br /><a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
+  }
+  
 
   }  // end try
   catch (PDOException $e) {
@@ -73,45 +79,7 @@
   } // end catch
 
 ?>
-
-
-
-1
-  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" >
-    <table>
-      <tr>
-        <td>
-          <label for="new_username">Username:</label>
-        </td>
-        <td>
-          <input class="form-control" type="text" name="table_username" id="table_username" size="<?php echo $fieldSize; ?>" />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="password">Password:</label>
-        </td>
-        <td>
-          <input class="form-control" type="password" name="password" id="password" size="<?php echo $fieldSize; ?>" v/>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="confirmed_password">Confirm Password:</label>
-        </td>
-        <td>
-          <input class="form-control" type="password" name="confirmed_password" id="confirmed_password" size="<?php echo $fieldSize; ?>" />
-        </td>
-      </tr>
-
-      <tr>
-        <td colspan="2">
-          <input type="submit" class="btn btn-primary" name="create_new_user" value="Create New User" />
-        </td>
-      </tr>
-    </table>
-  </form>
-  <a href="user-records.php">Back to records</a>
+  <a href="user-landing.php" type="button" class="btn btn-primary" style="float: right;">Back</a>
 
 </body>
 </html>

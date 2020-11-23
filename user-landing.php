@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
 
-  <title>Login</title>
+  <title>User Landings</title>
   <meta charset="utf-8">
 
 </head>
@@ -20,7 +20,7 @@ session_start();
   $userName = "root";  
   $password = "";  
   $databaseName = "final_project";
-    $fieldSize = 30;
+  $fieldSize = 30;
 
 
   try {
@@ -28,46 +28,55 @@ session_start();
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if($_SESSION["authenticated"] === true){
-      echo 'Hello, '.$_SESSION["username"];
-      echo '<br />Now you can access these pages: ';
+      echo '<div class="container-fluid">';
+      echo '<div class="row">';
+      echo '<div class="col-sm-8"><h4>Hello, '.$_SESSION["username"] .'</h4>';
+      echo '</div>';
+      echo '<div class="col-sm-4"><a href="user-logout.php" type="button" class="btn btn-info" style="float: right;">Logout</a>';
+      echo '</div>';
+      echo '<br /><p>Now you can access these pages:</p>';
+      echo '</div></div>';
       ?>
-
+<br>
 <div class="container">
-  <div class="row">
-    <div class="col-sm">
-      One of three columns
+  <div class="card-deck">
+    <div class="card bg-light text-dark">
+    <img class="card-img-top" src="customers.png" alt="Card image">
+      <div class="card-body text-center">
+      <h4 class="card-title">Customers</h4>
+        <p class="card-text">This section includes a list of all customers</p>
+        <p class="card-text">You will also have the chance to edit or delete customer records</p>
+        <p class="card-text">You can add a new record too</p>
+        <a href="customers-records.php" class="btn btn-info">See Customers</a>
+      </div>
     </div>
-    <div class="col-sm">
-      One of three columns
-    </div>
-    <div class="col-sm">
-      One of three columns
+    <div class="card bg-light text-dark">
+    <img class="card-img-top" src="users.png" alt="Card image">
+      <div class="card-body text-center">
+      <h4 class="card-title">Users</h4>
+        <p class="card-text">This section includes a list of all users</p>
+        <p class="card-text">You will also have the chance to delete user records, edit has issues</p>
+        <p class="card-text">You can add a new record too</p>
+        <a href="user-records.php" class="btn btn-info">See Users</a>
+      </div>
+    </div>    <div class="card bg-light text-dark">
+    <img class="card-img-top" src="orders.png" alt="Card image">
+      <div class="card-body text-center">
+      <h4 class="card-title">Orders</h4>
+        <p class="card-text">This section includes a list of all orders</p>
+        <p class="card-text">This list is generated using an inner-join between orders and customers tables.</p>
+        <p class="card-text">You can only view records here</p>
+        <a href="customer-orders.php" class="btn btn-info">See Orders</a>
+      </div>
     </div>
   </div>
 </div>
-
       <?php
-
-
-      echo '<br />';
-      echo '<br /> <div class="row">';
-        echo '<div class="col-sm-4">';
-        echo '<a href="customers-records.php" type="button" class="btn btn-info ">Customers</a>';
-        echo '</div>';
-        echo '<div class="col-sm-4">';
-        echo '<a href="user-records.php" type="button" class="btn btn-info ">Users</a>';
-        echo '</div>';
-        echo '<div class="col-sm-4">';
-        echo '<a href="customer-orders.php" type="button" class="btn btn-info ">Customer Orders innerjoin</a>';
-        echo '</div>';
-        echo '</div><br />';
-        echo '<a href="user-logout.php" type="button" class="btn btn-info ">Logout</a>';
     } else{
       echo "You need to login first";
+      echo '<br/>';
+      echo '<a href="user-login.php" type="button" class="btn btn-primary ">Login</a>';
     }
-       
-   
-
   }  // end try
   catch (PDOException $e) {
     echo '<br />  $e (toString()): '.$e;

@@ -15,9 +15,9 @@
   <h2>Read user record / Edit / Delete</h2>
 
   <?php
- session_start();
+   session_start();
    $userId = ""; 
-   $userName = "";
+   $userNameTable = "";
    $userTime= "";
 
    $serverName = "localhost"; 
@@ -29,20 +29,29 @@ try{
     $conn = new PDO("mysql:host=$serverName;dbname=$databaseName", $userName, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    if($_SESSION["authenticated"] === true){
+      echo '<div class="container-fluid">';
+      echo '<div class="row">';
+      echo '<div class="col-sm-8"><h4>Hello, '.$_SESSION["username"] .'</h4>';
+      echo '</div>';
+      echo '<div class="col-sm-4"><a href="user-logout.php" type="button" class="btn btn-info" style="float: right;">Logout</a>';
+      echo '</div>';
+      echo '<br /><p>To edit a record, click on the record ID</p>';
+      echo '</div></div>';
+
     //update one records
     if(isset($_POST["updateRecord"])){
-        $userName = htmlspecialchars($_POST["username"]);
-       // $userTime = htmlspecialchars($_POST["user_created_time"]);
+        $userNameTable = htmlspecialchars($_POST["username"]);
 
         $updateQueryString = "UPDATE users SET username = ?";
         $updateQueryString.= " WHERE user_id = ?";
         $updateQuery = $conn->prepare($updateQueryString);
-        $updateQuery->bindParam(1, $userName);
+        $updateQuery->bindParam(1, $userNameTable);
         $updateQuery->bindParam(2, $userId);
         $updateQuery->execute();
     }     
     else{
-        $userId = htmlspecialchars($_GET['user_id']);
+        $userId = htmlspecialchars($_GET['id']);
     }// end isset updateRecord
     
     //delete one records
@@ -56,21 +65,21 @@ try{
         $deleteQuery->execute();
     } 
     else{
-        $userId = htmlspecialchars($_GET['user_id']);
+        $userId = htmlspecialchars($_GET['id']);
     }// end isset deleteRecord
 
-    if(isset($_GET["user_id"])){
+    if(isset($_GET["id"])){
       
-      $userId = htmlspecialchars($_GET["user_id"]);
-      $selectQuery = "SELECT * FROM users WHERE user_id = " .$userId;  
-      $query = $conn->prepare($selectQuery);
-      $query->execute();
+      $userId = htmlspecialchars($_GET["id"]);
+      $selectQueryString = "SELECT * FROM users WHERE user_id = ?";  
+      $selectQuery = $conn->prepare($selectQueryString);
+      $selectQuery->bindParam(1, $userId);
+      $selectQuery->execute();
     
-      //$result = $query->setFetchMode(PDO::FETCH_ASSOC);
-      $users = $query->fetch();
-
+      $result = $selectQuery->setFetchMode(PDO::FETCH_ASSOC);
+      $users = $selectQuery->fetch();
       if(!empty($users)){
-        $userName = $users["username"];
+        $userNameTable = $users["username"];
        // $userTime = $users["user_created_time"];
       }
     else{
@@ -78,9 +87,8 @@ try{
       } 
     }
 
-    $userName = $users["username"];
-    $userTime = $users["user_created_time"];
-
+    $userNameTable = $users["username"];
+    
  ?>
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" >
     <table>
@@ -91,38 +99,34 @@ try{
     <label for="customer__name">Username:</label>
   </td>
   <td>
-    <input type="text" id="username" class="form-control" name="username" value="<?php echo $userName ?>" />
+    <input type="text" id="username" class="form-control" name="username" value="<?php echo $userNameTable ?>" />
   </td>
   </tr>
 </div>
-  <!-- <div class="form-group">
-  <td>  
-  <label for="customer__address">User Creation Time:</label>
-  </td>
-  <td>
-    <input type="text" id="user_created_time" class="form-control" name="user_created_time" value="<?php echo $userTime ?>" />
-  </td>
-    </div> -->
-
             <tr>
               <td>
-    <input type="submit" class="btn btn-primary" name="updateRecord" value="Update Record">
+              <input type="submit" class="btn btn-primary" name="updateRecord" value="Update Record" style="margin: 1em;">
             </td>
     <br />
     <td>
-    <input type="submit" class="btn btn-danger" name="deleteRecord" value="Delete Record">
+    <input type="submit" class="btn btn-danger" name="deleteRecord" value="Delete Record" style="margin: 1em;">
             </td>
     <br />
             </tr>
             </table>
     </form>
     
-    <a href="user-records.php">Back to records</a>
+    <a href="user-records.php" type="button" class="btn btn-primary" style="float: right;">Back To Records</a>
 
     <?php
 
-
+  }
+  else{
+    echo "<br />Please login first!<br />";
+    echo '<br /><a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
+  }
     }
+    
     catch(PDOException $e){
       echo "<br />Could not establish database connection.";
     }

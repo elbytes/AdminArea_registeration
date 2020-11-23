@@ -11,15 +11,35 @@
 </head>
 
 <body>
+
 <?php require("navbar.html"); ?>
-  
-  <div class="container-fluid">
+<div class="container-fluid">
     <div class="row">
       <div class="col-sm-6"><h1>Welcome!</h1></div>
-      <div class="col-sm-6" >
     </div>
     </div>
-    <br>
+  <?php  session_start();
+$serverName = "localhost"; 
+$userName = "root"; 
+$password = ""; 
+$databaseName = "final_project";
+
+try{
+ $conn = new PDO("mysql:host=$serverName;dbname=$databaseName", $userName, $password);
+ $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  if($_SESSION["authenticated"] === true){
+    echo '<div class="container-fluid">';
+    echo '<div class="row">';
+    echo '<div class="col-sm-8"><h4>Hello, '.$_SESSION["username"] .'</h4>';
+    echo '</div>';
+    echo '<div class="col-sm-4"><a href="user-logout.php" type="button" class="btn btn-info" style="float: right;">Logout</a>';
+    echo '</div>';
+    echo '</div></div>';
+    header("Location: user-landing.php");
+
+  }else{
+    ?>
     <div class="row">
       <div class="col-sm-4" ></div>
       <div class="col-sm-4" >
@@ -32,8 +52,16 @@
       </div>
       </div>
       </div>
-  
   </div>
+  <?php
+  }
 
+}
+catch(PDOException $e){
+  echo "<br />Could not establish database connection.";
+}
+
+  ?>
+    <br>
 </body>
 </html>

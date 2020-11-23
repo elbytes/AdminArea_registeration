@@ -42,7 +42,7 @@
       </tr>
       <tr>
         <td colspan="2">
-          <input class="btn btn-success" type="submit" name="insert_record" value="Create New Customer Record" />
+          <input class="btn btn-success" type="submit" name="insert_record" value="Create New Customer Record" style="margin: 1em;"/>
         </td>
       </tr>
     </table>

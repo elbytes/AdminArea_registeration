@@ -33,10 +33,15 @@ try{
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if($_SESSION["authenticated"] === true){
-      echo 'Hello, '.$_SESSION["username"];
-      echo '<div class="row"><div class="col">';
-      echo '<h5 style="margin-top: 0.5em;">To edit a record, click on the record ID</h5>';
-      echo '</div></div>'; 
+      echo '<div class="container-fluid">';
+      echo '<div class="row">';
+      echo '<div class="col-sm-8"><h4>Hello, '.$_SESSION["username"] .'</h4>';
+      echo '</div>';
+      echo '<div class="col-sm-4"><a href="user-logout.php" type="button" class="btn btn-info" style="float: right;">Logout</a>';
+      echo '</div>';
+      echo '<br /><p>To edit a record, click on the record ID</p>';
+      echo '</div></div>';
+
       
         $selectQuery = "SELECT * FROM customers ORDER BY customer_id";
         $query = $conn->prepare($selectQuery);
@@ -82,14 +87,14 @@ try{
 
         $htmlOutput .= "</table>"; 
         echo $htmlOutput;
-        echo '<a href="user-logout.php" type="button" class="btn btn-primary" style="float: right;">Logout</a>';
     }//end if
-  else{
-    echo "Please login first!";
-    echo '<br />';
-    echo '<a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
-  }
-    echo "<br />end of records";
+    else{
+      echo "<br />Please login first!<br />";
+      echo '<br /><a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
+    }
+    
+  echo '<a href="user-landing.php" type="button" class="btn btn-primary" style="float: right;">Back</a>';
+
 }//end try
     catch(PDOException $e){
       echo "<br />Could not establish database connection.";
