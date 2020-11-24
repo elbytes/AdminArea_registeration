@@ -23,7 +23,8 @@ try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
- if(isset($_SESSION["authenticated"]) && $_SESSION["authenticated"] === true){      echo '<div class="container-fluid">';
+ if(isset($_SESSION["authenticated"]) && $_SESSION["authenticated"] === true){      
+      echo '<div class="container-fluid">';
       echo '<div class="row">';
       echo '<div class="col-sm-8"><h4>Hello, '.$_SESSION["username"] .'</h4>';
       echo '</div>';
@@ -54,9 +55,10 @@ try {
         $insertQuery->bindParam(2, $customerAddress);
         $insertQuery->bindParam(3, $customerCity);
         $insertQuery->bindParam(4, $customerStatus);
-
         $insertQuery->execute();
+        echo "Customer record created";
       }//end isset insert
+      
       ?>
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" >
      <table>
@@ -107,7 +109,7 @@ try {
  </form>
       <?php
      
-    }
+    }//end session
     else{
       echo "<br />Please login first!";
       echo '<br /><a href="user-login.php" type="button" class="btn btn-primary" >Login</a>';
@@ -116,7 +118,7 @@ try {
  <a href="user-landing.php" type="button" class="btn btn-primary" style="float: right;">Back</a>
 
   <?php
-  }
+  }//end try
   catch(PDOException $e){
       echo "Connection failed: " . $e->getMessage();
   }

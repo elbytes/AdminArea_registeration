@@ -69,21 +69,15 @@ try{
         $deleteQuery->bindParam(1, $customerId);
         $deleteQuery->execute();
         echo "record deleted";
-    }
-
+    }//end delete one record
      else{
-      echo 'page accessed from GET hyperlink';
       $customerId = $_GET["id"];
     }// end isset updateRecord 
-
-
-     
 
 
       //read one record
       if(isset($_GET['id'])){
       $selectQueryString = "SELECT * FROM customers WHERE customer_id = ?";
-      
       $selectQuery = $conn->prepare($selectQueryString);
       $selectQuery->bindParam(1, $customerId);
       $selectQuery->execute();
@@ -91,7 +85,6 @@ try{
       $result = $selectQuery->setFetchMode(PDO::FETCH_ASSOC);
       $customers = $selectQuery->fetch();
           if(!empty($customers)){
-            echo "record found";
             $customerName = $customers["customer_name"];
             $customerAddress = $customers["customer_address"];
             $customerCity = $customers["customer_city"];
@@ -152,7 +145,7 @@ try{
       </form>
             <?php
           }//end if !empty
-    } //end isset $_GET[''id]
+    } //end isset $_GET['id']
  ?>
       
   
