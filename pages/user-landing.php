@@ -41,7 +41,7 @@ session_start();
 <div class="container">
   <div class="card-deck">
     <div class="card bg-light text-dark">
-    <img class="card-img-top" src="customers.png" alt="Card image">
+    <img class="card-img-top" src="../res/customers.png" alt="Card image">
       <div class="card-body text-center">
       <h4 class="card-title">Customers</h4>
         <p class="card-text">This section includes a list of all customers</p>
@@ -51,7 +51,7 @@ session_start();
       </div>
     </div>
     <div class="card bg-light text-dark">
-    <img class="card-img-top" src="users.png" alt="Card image">
+    <img class="card-img-top" src="../res/users.png" alt="Card image">
       <div class="card-body text-center">
       <h4 class="card-title">Users</h4>
         <p class="card-text">This section includes a list of all users</p>
@@ -60,7 +60,7 @@ session_start();
         <a href="user-records.php" class="btn btn-info">See Users</a>
       </div>
     </div>    <div class="card bg-light text-dark">
-    <img class="card-img-top" src="orders.png" alt="Card image">
+    <img class="card-img-top" src="../res/orders.png" alt="Card image">
       <div class="card-body text-center">
       <h4 class="card-title">Orders</h4>
         <p class="card-text">This section includes a list of all orders</p>

@@ -74,7 +74,7 @@
       <div class="col-sm-4" ></div>
       <div class="col-sm-4" >
       <div class="card" style="width:400px">
-  <img class="card-img-top" src="img_avatar1.png" alt="Card image" style="padding: 1em 1em;">
+  <img class="card-img-top" src="../res/img_avatar1.png" alt="Card image" style="padding: 1em 1em;">
   <div class="card-body">
   <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" >
     <table>

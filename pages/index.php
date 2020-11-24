@@ -44,7 +44,7 @@ try{
       <div class="col-sm-4" ></div>
       <div class="col-sm-4" >
       <div class="card" style="width:400px">
-  <img class="card-img-top" src="img_avatar1.png" alt="Card image" style="padding: 1em 1em;">
+  <img class="card-img-top" src="../res/img_avatar1.png" alt="Card image" style="padding: 1em 1em;">
   <div class="card-body">
     <h4 class="card-title">No Login, No Go</h4>
     <p class="card-text">Please login to access pages</p>
