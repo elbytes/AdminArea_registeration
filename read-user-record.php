@@ -102,7 +102,6 @@ try{
       </tr>
    </table>
 </form>
-<a href="user-records.php" type="button" class="btn btn-primary" style="float: right;">Back To Records</a>
 <?php
       }//end if!empty
     else{
@@ -124,6 +123,7 @@ catch(PDOException $e){
 }
 
 ?>
+<a href="user-records.php" type="button" class="btn btn-primary" style="float: right;">Back To Records</a>
 
 </body>
 </html>
