@@ -124,7 +124,6 @@ catch(PDOException $e){
 }
 
 ?>
-            <a href="user-records.php" type="button" class="btn btn-primary" style="float: right; margin: 1em;">Back To Records</a>
 
 </body>
 </html>

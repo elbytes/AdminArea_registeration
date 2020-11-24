@@ -55,7 +55,7 @@ session_start();
       <div class="card-body text-center">
       <h4 class="card-title">Users</h4>
         <p class="card-text">This section includes a list of all users</p>
-        <p class="card-text">You will also have the chance to delete user records, edit has issues</p>
+        <p class="card-text">You will also have the chance to edit or delete user records</p>
         <p class="card-text">You can add a new record too</p>
         <a href="user-records.php" class="btn btn-info">See Users</a>
       </div>
